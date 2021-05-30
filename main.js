@@ -57,6 +57,10 @@
     }
 
     self.BoardView.prototype={
+        //limpia para ver el movimiento de la barra
+        clean: function(){
+            this.context.clearRect(0,0,this.board.width, this.board.height);
+        },
         draw: function(){
             for (var i = this.board.elements.length -1; i >= 0; i--) {
                 var el = this.board.elements[i];
@@ -109,6 +113,7 @@ window.requestAnimationFrame(controller);
 //Funcion principal para ejecutar todos los elementos
 function controller()
 {
+    board_view.clean();
     board_view.draw();
     window.requestAnimationFrame(controller);
 }
