@@ -9,6 +9,7 @@
         this.ball = null;
     }
 
+    //Se crea para obtener los prototipos Getter
     self.Board.prototype = {
         get elements(){
             var elements = this.bars;
@@ -18,15 +19,23 @@
     }
 })();
 
-//
+//Clase para dibujar las vistas del pizarron
 (function(){
     self.BoardView = function(canvas,board){
         this.canvas = canvas;
+        this.canvas.width = board.width;
+        this.canvas.height = board.height;
+        this.board = board;
+        this.context = canvas.getContext("2d");
     }
 })();
+
+window.addEventListener("load",main);
 
 //Funcion principal para ejecutar todos los elementos
 function main()
 {
-
+    var board = new Board(800,400);
+    var canvas = document.getElementById('canvas');
+    var board_view = new BoardView(canvas,board);
 }
