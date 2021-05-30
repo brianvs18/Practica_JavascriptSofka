@@ -13,7 +13,7 @@
     self.Board.prototype = {
         get elements(){
             var elements = this.bars;
-            elements.push(this.ball);
+            //elements.push(this.ball);
             return elements;
         }
     }
@@ -67,16 +67,23 @@
     }
 
     function draw(context,element){
-        if(element !== null && element.hasOwnProperty("kind")){
-            switch(element.kind){
-                case "rectangle":
-                    context.fillRect(element.x,element.y, element.width,element.height);
-                    break;
-            }
-        }        
+        switch(element.kind){
+            case "rectangle":
+                context.fillRect(element.x,element.y, element.width,element.height);
+                break;
+        }             
     }
 })();
 
+var board = new Board(800,400);
+var bar = new Bar(20,100,20,100,board);
+var bar_2 = new Bar(760,100,20,100,board);
+var canvas = document.getElementById('canvas');
+var board_view = new BoardView(canvas,board);
+
+window.requestAnimationFrame(controller);
+
+//Configuracion para mover la barra
 document.addEventListener("keydown", function(ev){
     if(ev.keyCode == 38){
         bar.up();
@@ -84,18 +91,24 @@ document.addEventListener("keydown", function(ev){
     else if(ev.keyCode == 40){
         bar.down();
     }
-})
+    if(ev.keyCode === 87){
+        //W
+        bar_2.up();
+    }
+    else if(ev.keyCode === 83){
+        //S
+        bar_2.down();
+    }
 
-window.addEventListener("load",main);
+    console.log(bar.toString());
+});
+
+//window.addEventListener("load",main);
+window.requestAnimationFrame(controller);
 
 //Funcion principal para ejecutar todos los elementos
-function main()
+function controller()
 {
-    var board = new Board(800,400);
-    var bar = new Bar(20,100,20,100,board);
-    var bar = new Bar(760,100,20,100,board);
-    var canvas = document.getElementById('canvas');
-    var board_view = new BoardView(canvas,board);
-
     board_view.draw();
+    window.requestAnimationFrame(controller);
 }
