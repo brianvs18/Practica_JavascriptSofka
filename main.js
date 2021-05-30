@@ -27,18 +27,21 @@
         this.width = width;
         this.height = height;
         this.board = board;
-
         this.board.bars.push(this);
-
         this.kind = "rectangle";
+        this.speed = 10;
     }
 
+    //Para mover las barras
     self.Bar.prototype = {
         down: function(){
-
+            this.y += this.speed;
         },
         up: function(){
-
+            this.y -= this.speed;
+        },
+        toString: function(){
+            return "x: "+this.x+" y: "+this.y;
         }
     }
 })();
@@ -73,6 +76,15 @@
         }        
     }
 })();
+
+document.addEventListener("keydown", function(ev){
+    if(ev.keyCode == 38){
+        bar.up();
+    }
+    else if(ev.keyCode == 40){
+        bar.down();
+    }
+})
 
 window.addEventListener("load",main);
 
