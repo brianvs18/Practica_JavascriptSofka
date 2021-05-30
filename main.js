@@ -7,6 +7,7 @@
         this.game_over = false;
         this.bars = [];
         this.ball = null;
+        this.playing = false;
     }
 
     //Se crea para obtener los prototipos Getter de la clase Board
@@ -28,9 +29,18 @@
         this.speed_y = 0;
         this.speed_x = 3;
         this.board = board;
+        this.direction = 1;
 
         board.ball = this;
-        this.kind = "circle";
+        this.kind = "circle";        
+    }
+
+    //Funcion para mover la pelota
+    self.Ball.prototype = {
+        move: function(){
+            this.x += (this.speed_x * this.direction);
+            this.y += (this.speed_y);
+        }
     }
 })();
 
@@ -85,11 +95,15 @@
         },
         //Metodo para jugar, limpia y dibuja el board
         play: function(){
-            this.clean();
-            this.draw();
+            if(this.board.playing){
+                this.clean();
+                this.draw();
+                this.board.ball.move();
+            }            
         }
     }
 
+    //Funcion que dibuja el board
     function draw(context,element){
         switch(element.kind){
             case "rectangle":
@@ -132,8 +146,10 @@ document.addEventListener("keydown", function(ev){
         //down
         bar_2.down();
     }
-
-    console.log(bar.toString());
+    else if(ev.keyCode === 32){
+        ev.preventDefault();
+        board.playing = !board.playing;
+    }
 });
 
 //window.addEventListener("load",main);
