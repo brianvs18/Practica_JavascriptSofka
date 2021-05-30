@@ -12,7 +12,7 @@
     //Se crea para obtener los prototipos Getter de la clase Board
     self.Board.prototype = {
         get elements(){
-            var elements = this.bars;
+            var elements = this.bars.map(function(bar){return bar;});
             elements.push(this.ball);
             return elements;
         }
