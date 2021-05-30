@@ -40,6 +40,26 @@
         move: function(){
             this.x += (this.speed_x * this.direction);
             this.y += (this.speed_y);
+        },
+        collition: function(bar){
+            //Reacciona a la colision con una barra que recibe como parametro
+            var relative_intersect_y = (bar.y + (bar.height / 2)) - this.y;
+
+            var normalized_intersect_y = relative_intersect_y / (bar.height / 2);
+
+            this.bounce_angle = normalized_intersect_y * this.max_bounce_angle;
+
+            this.speed_y = this.speed * -Math.sin(this.bounce_angle);
+            this.speed_x = this.speed * Math.cos(this.bounce_angle);
+
+            if(this.x > (this.board.width / 2))
+            {
+                this.direction = -1;
+            } 
+            else
+            {
+                this.direction = 1
+            } 
         }
     }
 })();
@@ -93,6 +113,17 @@
                 draw(this.context,el);
             };
         },
+
+        check_collitions: function(){
+            for (var i = this.board.bars.length -1; i >= 0; i--) {
+                var bar = this.board.bars[i];
+                if(hit(bar, this.board.ball))
+                {
+                    this.board.ball.collition(bar);
+                }
+                
+            };
+        },
         //Metodo para jugar, limpia y dibuja el board
         play: function(){
             if(this.board.playing){
@@ -101,6 +132,37 @@
                 this.board.ball.move();
             }            
         }
+    }
+
+    function hit(a,b){
+        //Revisa si a colisiona con b
+        var hit = false;
+        //Colisiones horizontales
+        if(b.x + b.width >= a.x && b.x < a.x + a.width)
+        {
+            //Colisiones verticales
+            if(b.y + b.height >= a.y && b.y < a.y + a.height)
+            {
+                hit = true;
+            }
+        }
+        //Colision de a con b
+        if(b.x <= a.x && b.x + b.width >= a.x + a.width)
+        {
+            if(b.y <= a.y && b.y + b.height >= a.y + a.height)
+            {
+                hit = true;
+            }
+        }
+        //Colision de b con a
+        if(a.x <= b.x && a.x + a.width >= b.x + b.width)
+        {
+            if(a.y <= b.y && a.y + a.height >= b.y + b.height)
+            {
+                hit = true;
+            }
+        }
+        return hit;
     }
 
     //Funcion que dibuja el board
@@ -152,7 +214,7 @@ document.addEventListener("keydown", function(ev){
     }
 });
 
-//window.addEventListener("load",main);
+board_view.draw();
 window.requestAnimationFrame(controller);
 
 //Funcion principal para ejecutar todos los elementos
