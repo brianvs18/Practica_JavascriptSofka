@@ -67,6 +67,11 @@
 
                 draw(this.context,el);
             };
+        },
+        //Metodo para jugar, limpia y dibuja el board
+        play: function(){
+            this.clean();
+            this.draw();
         }
     }
 
@@ -89,18 +94,20 @@ window.requestAnimationFrame(controller);
 
 //Configuracion para mover la barra
 document.addEventListener("keydown", function(ev){
-    if(ev.keyCode == 38){
+    if(ev.keyCode == 87){
+        //W
         bar.up();
     }
-    else if(ev.keyCode == 40){
+    else if(ev.keyCode == 83){
+        //S
         bar.down();
     }
-    if(ev.keyCode === 87){
-        //W
+    if(ev.keyCode === 38){
+        //up
         bar_2.up();
     }
-    else if(ev.keyCode === 83){
-        //S
+    else if(ev.keyCode === 40){
+        //down
         bar_2.down();
     }
 
@@ -113,7 +120,6 @@ window.requestAnimationFrame(controller);
 //Funcion principal para ejecutar todos los elementos
 function controller()
 {
-    board_view.clean();
-    board_view.draw();
+    board_view.play();
     window.requestAnimationFrame(controller);
 }
